@@ -1,0 +1,20 @@
+# MacOS
+.DS_Store
+
+# Xcode
+**/*.xcodeproj/xcuserdata
+**/*/User.xcconfig
+**/*.xcworkspace/xcuserdata
+**/*.xcodeproj/project.xcworkspace/xcuserdata
+
+## Relative Derived Data
+build/
+DerivedData/
+
+# Fastlane
+fastlane/report.xml
+fastlane/README.md
+
+# CocoaPods
+Pods/
+Pods/Pods.xcodeproj/xcuserdata/*
