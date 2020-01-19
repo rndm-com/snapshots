@@ -57,7 +57,7 @@
 		85AD72C82397171F000C5611 /* XCTest+Snapshots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTest+Snapshots.swift"; sourceTree = "<group>"; };
 		85AD72CB23971768000C5611 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		85AD72CF23971780000C5611 /* Comparer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Comparer.swift; path = ../Protocols/Comparer.swift; sourceTree = "<group>"; };
-		85ED70BF23A46B0000F763C6 /* Snapshots.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Snapshots.podspec; sourceTree = "<group>"; };
+		85ED70BF23A46B0000F763C6 /* Snapshots.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Snapshots.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
