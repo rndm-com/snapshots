@@ -40,6 +40,11 @@ extension XCTestCase {
         let snap = Snapshot(sut)
         let expectation = snapshot(for: snap, config: config, function: function, file: file, name: name)
         let result = snap.snapshot
-        XCTAssertEqual(expectation, result, Comparer(lhs: expectation, rhs: result).compare(), file: file, line: line)
+        let comparison = Comparer(lhs: expectation, rhs: result).compare()
+        if expectation != result {
+            let divider = "<-------------------->"
+            print("\n\(divider)\nTEST_FAILED: => \(file.description.components(separatedBy: "/").last!):\(line) - \(function): \(name)\n\(comparison)\n\(divider)\n")
+        }
+        XCTAssertEqual(expectation, result, comparison, file: file, line: line)
     }
 }
