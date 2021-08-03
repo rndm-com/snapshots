@@ -11,18 +11,19 @@ import XCTest
 public
 extension XCTestCase {
     func snapshot(for object: Snapshot,
-                  path: String = Snapshot.preferredBasePath,
-                  overwrite: Bool = false,
+                  config: SnapshotConfig = .standard,
                   function: String = #function,
+                  file: StaticString = #file,
                   name: String = #function) -> String {
         let regex = #"(\(|\))"#
         let filename = [classForCoder, function, name]
             .map { "\($0)" }.joined(separator: "_")
             .replacingOccurrences(of: regex, with: "", options: .regularExpression)
         let projectDirectory = URL(fileURLWithPath: Bundle(for: classForCoder).infoDictionary!["PROJECT_DIR"] as? String ?? "")
-        let documentsDirectory = projectDirectory.appendingPathComponent(path)
+        let documentsDirectory = config.storageType.directory(in: projectDirectory, file: file.description, basePath: config.basePath)
+        try? FileManager.default.createDirectory(at: documentsDirectory, withIntermediateDirectories: true, attributes: nil)
         let path = documentsDirectory.appendingPathComponent(filename).appendingPathExtension("json")
-        if !overwrite, let string = try? String(contentsOf: path) {
+        if !config.overwrite, let string = try? String(contentsOf: path) {
             return string
         } else {
             try! object.snapshot.write(to: path, atomically: true, encoding: .utf8)
@@ -31,15 +32,19 @@ extension XCTestCase {
     }
 
     func XCTAssertSnapshot(_ sut: Any,
-                           path: String = Snapshot.preferredBasePath,
-                           overwrite: Bool = false,
+                           config: SnapshotConfig = .standard,
                            function: String = #function,
                            name: String = #function,
                            file: StaticString = #file,
                            line: UInt = #line) {
         let snap = Snapshot(sut)
-        let expectation = snapshot(for: snap, path: path, overwrite: overwrite, function: function, name: name)
+        let expectation = snapshot(for: snap, config: config, function: function, file: file, name: name)
         let result = snap.snapshot
-        XCTAssertEqual(expectation, result, Comparer(lhs: expectation, rhs: result).compare(), file: file, line: line)
+        let comparison = Comparer(lhs: expectation, rhs: result).compare()
+        if expectation != result {
+            XCTFail("\(name) --- \(comparison)", file: file, line: line)
+        } else {
+            XCTAssertEqual(expectation, result, comparison, file: file, line: line)
+        }
     }
 }

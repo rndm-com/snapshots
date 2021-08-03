@@ -10,7 +10,7 @@ import Foundation
 
 public
 protocol Snapshottable {
-    var children: [String: Any] { get }
+    var _props: [String: Any] { get }
 }
 
 public
@@ -18,7 +18,7 @@ extension Snapshottable {
     var mirror: Mirror {
         return Mirror(self, children: Mirror(reflecting: self)
             .children
-            .reduce(children) {
+            .reduce(_props) {
             var output = $0
             if let label = $1.label {
                 output[label] = $1.value

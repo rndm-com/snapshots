@@ -24,9 +24,30 @@ extension Bool: Primitive {
 }
 
 extension CGFloat: Primitive {}
-extension CGPoint: Primitive {}
-extension CGSize: Primitive {}
-extension CGRect: Primitive {}
+extension CGPoint: Primitive {
+    public var rawValue: Primitive {
+        [
+            "x": x,
+            "y": y,
+        ]
+    }
+}
+extension CGSize: Primitive {
+    public var rawValue: Primitive {
+        [
+            "width": width,
+            "height": height,
+        ]
+    }
+}
+extension CGRect: Primitive {
+    public var rawValue: Primitive {
+        [
+            "origin": origin.rawValue,
+            "size": size.rawValue,
+        ]
+    }
+}
 
 extension Primitive where Self: CustomStringConvertible {
     public var rawValue: Primitive {

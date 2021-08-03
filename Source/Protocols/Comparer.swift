@@ -29,9 +29,9 @@ extension Comparer {
     private func test<T: Equatable>(key: String, lhs: T?, rhs: T?) -> String? {
         switch (lhs, rhs) {
         case (.some(let lhs), .some(let rhs)) where lhs != rhs:
-            return "\nkey \(key) expected: \(lhs) - actual: \(rhs)"
+            return "~key: \(key), expected: \(lhs), actual: \(rhs)~"
         case (.some(let lhs), .none):
-            return "\nkey \(key) expected: \(lhs) - actual: \(String(describing: rhs == nil ? nil : rhs!))"
+            return "~key: \(key), expected: \(lhs), actual: \(String(describing: rhs == nil ? nil : rhs!))~"
         default:
             return nil
         }
@@ -55,12 +55,12 @@ extension Comparer {
                 }
                 if case let missing = lhs - rhs, !missing.isEmpty {
                     missing.forEach {
-                        message.append("\nnew key value paring: \(key).\($0.key) = \($0.value)")
+                        message.append("~new key value paring: \(key).\($0.key) = \($0.value)~")
                     }
                 }
                 return message
             }
-            return "\nkey \(key) expected: \(lhs) - actual: \(String(describing: rhs))"
+            return "~key: \(key), expected: \(lhs), actual: \(String(describing: rhs))~"
         }
         return nil
     }

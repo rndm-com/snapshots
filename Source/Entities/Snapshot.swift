@@ -17,14 +17,20 @@ struct Snapshot {
     }
 
     var dictionary: [String: Any] {
+        guard String(describing: object) != "nil" else { return [:] }
         let mirror = (object as? Snapshottable)?.mirror ?? Mirror(reflecting: object)
         return mirror.children.reduce([String: Any]()) {
             var output = $0
-            if let label = $1.label {
-                output[label] = ($1.value as? Primitive)?.rawValue ?? Snapshot($1.value).dictionary
+            if let label = $1.label, String(describing: $1.value) != "nil" {
+                output[label] = derive(value: $1.value)
             }
             return output
         }
+    }
+    private func derive(value: Any) -> Any {
+        return (value as? Primitive)?.rawValue
+            ?? (value as? [Primitive])?.map { $0.rawValue }
+            ?? Snapshot(value).dictionary
     }
 
     private var data: Data {
@@ -34,8 +40,4 @@ struct Snapshot {
     public var snapshot: String {
         return String(data: data, encoding: .utf8)!
     }
-}
-
-public extension Snapshot {
-    static let preferredBasePath = "_snaps"
 }
